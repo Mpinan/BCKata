@@ -1,12 +1,31 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import App from './Components/App/App';
 import reportWebVitals from './reportWebVitals';
+import { Provider } from 'react-redux';
+import { init } from '@rematch/core';
+import * as models from './Components/Provider/models';
+
+const store = init({
+  models,
+});
+
+// if exported as default
+// import products from './Components/Provider/models';
+
+
+
+// const store = init({
+//   models: { products },
+// });
+
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );
