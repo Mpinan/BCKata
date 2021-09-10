@@ -1,5 +1,6 @@
 import { getItems } from './service'
 
+
 export const products = {
   state: {
     items: [],

@@ -1,16 +1,25 @@
 import { init } from "@rematch/core";
-import { models } from './models';
+
+jest.mock("./models.js")
 
 describe("App", () => {
+  const mockLoadProducts = jest.fn();
   let store;
+
   beforeEach(() => {
     store = init({
-      models: {
-        products: { ...models, state: { products: [] } },
+      products: {
+        items: {
+          state: {items: ["hello", "hello", "hello"]},
+          effects: {
+            loadProducts: mockLoadProducts
+          }
+        },
       },
     })
   })
   it("should be able to list items", () => {
-    expect(true).toBe(true);
+    console.log(mockLoadProducts())
+    expect(mockLoadProducts()).toBe([]);
   });
 });

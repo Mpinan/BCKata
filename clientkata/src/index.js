@@ -14,8 +14,6 @@ const store = init({
 // if exported as default
 // import products from './Components/Provider/models';
 
-
-
 // const store = init({
 //   models: { products },
 // });
