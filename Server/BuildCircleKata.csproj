@@ -6,6 +6,11 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="xunit.extensibility.core" Version="2.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="BuildCircleKata.Tests\packages.config" />
   </ItemGroup>
 
 
