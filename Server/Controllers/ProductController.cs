@@ -1,49 +1,74 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.IO;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System;
 
 namespace BuildCircleKata.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("products")]
     public class ProductController : Controller
     {
-
-        [HttpGet]
-        public IEnumerable<Product> Get()
+        public List<Product> getAllItems()
         {
-            StreamReader r = new StreamReader("./items.json");
-            string jsonString = r.ReadToEnd();
-
-
-            var jsonDeserialized = JsonConvert.DeserializeObject<Root>(jsonString);
-            List<Product> productsList = jsonDeserialized.Items;
-
-            return productsList;
-
+            using (StreamReader r = new StreamReader("./items.json"))
+            {
+                string json = r.ReadToEnd();
+                var products = JsonConvert.DeserializeObject<Products>(json);
+                List<Product> productList = products.Items;
+                return productList;
+            }
         }
 
-        [HttpGet("{id}")]
-        public IActionResult GetIndex(int? id)
+        public Product loadById(int? id)
         {
-            StreamReader r = new StreamReader("./items.json");
-            string jsonString = r.ReadToEnd();
+            var item = getAllItems().FirstOrDefault(t => t.id == id);
+            return item;
+        }
 
+        public Product loadByName(string name)
+        {
+            var item = getAllItems().FirstOrDefault(t => t.name == name);
+            return item;
+        }
 
-            var jsonDeserialized = JsonConvert.DeserializeObject<Root>(jsonString);
-            List<Product> productsList = jsonDeserialized.Items;
+        [HttpGet]
+        public IActionResult Get()
+        {
+            return Ok(getAllItems());
+        }
 
-            var item = productsList.FirstOrDefault(t => t.id == id);
-            if (item == null)
-            {
-                return NotFound();
-            }
-            return new ObjectResult(item);
+        [HttpGet("product/{id}")]
+        public IActionResult GetId(int? id)
+        {
+            var product = loadById(id);
+            return product == null
+                ? NotFound()
+                : Ok(product);
+        }
+
+        [HttpGet("name/{name}")]
+        public IActionResult GetByName(string name)
+        {
+            var product = loadByName(name);
+            return product == null
+                ? NotFound()
+                : Ok(product);
+        }
+
+        [HttpGet("tag/{tag}")]
+        public IActionResult GetByTags(string tag)
+        {
+            var productsList = getAllItems();
+
+            var products = productsList.Where(product => product.tags.Contains(tag)).ToList();
+
+            return products.Any() 
+                ? Ok(products) 
+                : NotFound();
         }
 
     }

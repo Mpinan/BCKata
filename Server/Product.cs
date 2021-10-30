@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace BuildCircleKata
 {
@@ -14,10 +11,5 @@ namespace BuildCircleKata
         public string description { get; set; }
         public List<string> tags { get; set; }
         public string category { get; set; }
-    }
-
-    public class Root
-    {
-        public List<Product> Items { get; set; }
     }
 }
